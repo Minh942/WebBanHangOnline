@@ -106,4 +106,3 @@ namespace WebBanHangOnline.Models.Common
         }
     }
 }
-}

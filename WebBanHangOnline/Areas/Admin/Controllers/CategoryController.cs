@@ -38,5 +38,48 @@ namespace WebBanHangOnline.Areas.Admin.Controllers
             }
             return View(model);
         }
+
+        public ActionResult Edit(int id)
+        {
+            var item = dbContext.Categories.Find(id);
+            return View();
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(Category model)
+        {
+            if (ModelState.IsValid)
+            {
+                dbContext.Categories.Attach(model);
+                model.ModifiedDate = DateTime.Now;
+                model.Alias = WebBanHangOnline.Models.Common.Filter.ChuyenCoDauThanhKhongDau(model.Title);
+                dbContext.Entry(model).Property(x => x.Title).IsModified = true;
+                dbContext.Entry(model).Property(x => x.Descreption).IsModified = true;
+                dbContext.Entry(model).Property(x => x.Alias).IsModified = true;
+                dbContext.Entry(model).Property(x => x.SeoDesception).IsModified = true;
+                dbContext.Entry(model).Property(x => x.SeoKeywords).IsModified = true;
+                dbContext.Entry(model).Property(x => x.SeoTitle).IsModified = true;
+                dbContext.Entry(model).Property(x => x.Position).IsModified = true;           
+                dbContext.Entry(model).Property(x => x.ModifiedDate).IsModified = true;           
+                dbContext.Entry(model).Property(x => x.ModifiedBy).IsModified = true;           
+                dbContext.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {
+            var item = dbContext.Categories.Find(id);
+            if(item != null)
+            {                
+                dbContext.Categories.Remove(item);
+                dbContext.SaveChanges();
+                return Json(new { success = true });
+            }
+            return Json(new { success = false });
+        }
     }
 }
