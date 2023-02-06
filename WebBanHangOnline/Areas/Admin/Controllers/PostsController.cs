@@ -8,13 +8,13 @@ using WebBanHangOnline.Models.EF;
 
 namespace WebBanHangOnline.Areas.Admin.Controllers
 {
-    public class NewsController : Controller
+    public class PostsController : Controller
     {
         private ApplicationDbContext dbContext = new ApplicationDbContext();
         // GET: Admin/News
         public ActionResult Index()
         {
-            var items = dbContext.News.OrderByDescending(x => x.Id).ToList();           
+            var items = dbContext.Posts.OrderByDescending(x => x.Id).ToList();
             return View(items);
         }
 
@@ -22,10 +22,10 @@ namespace WebBanHangOnline.Areas.Admin.Controllers
         {
             return View();
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Add(News model)
+        public ActionResult Add(Posts model)
         {
             if (ModelState.IsValid)
             {
@@ -33,7 +33,7 @@ namespace WebBanHangOnline.Areas.Admin.Controllers
                 model.CategoryId = 1;
                 model.ModifiedDate = DateTime.Now;
                 model.Alias = WebBanHangOnline.Models.Common.Filter.ChuyenCoDauThanhKhongDau(model.Title);
-                dbContext.News.Add(model);
+                dbContext.Posts.Add(model);
                 dbContext.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -48,13 +48,13 @@ namespace WebBanHangOnline.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(News model)
+        public ActionResult Edit(Posts model)
         {
             if (ModelState.IsValid)
-            {                               
+            {
                 model.ModifiedDate = DateTime.Now;
                 model.Alias = WebBanHangOnline.Models.Common.Filter.ChuyenCoDauThanhKhongDau(model.Title);
-                dbContext.News.Attach(model);
+                dbContext.Posts.Attach(model);
                 dbContext.Entry(model).State = System.Data.Entity.EntityState.Modified;
                 dbContext.SaveChanges();
                 return RedirectToAction("Index");
@@ -64,10 +64,10 @@ namespace WebBanHangOnline.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            var item = dbContext.News.Find(id);
+            var item = dbContext.Posts.Find(id);
             if (item != null)
             {
-                dbContext.News.Remove(item);
+                dbContext.Posts.Remove(item);
                 dbContext.SaveChanges();
                 return Json(new { success = true });
             }
@@ -77,13 +77,13 @@ namespace WebBanHangOnline.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult IsActive(int id)
         {
-            var item = dbContext.News.Find(id);
+            var item = dbContext.Posts.Find(id);
             if (item != null)
             {
                 item.IsActive = !item.IsActive;
                 dbContext.Entry(item).State = System.Data.Entity.EntityState.Modified;
                 dbContext.SaveChanges();
-                return Json(new { success = true , isActive = item.IsActive});
+                return Json(new { success = true, isActive = item.IsActive });
             }
             return Json(new { success = false });
         }
@@ -93,14 +93,14 @@ namespace WebBanHangOnline.Areas.Admin.Controllers
             if (!string.IsNullOrEmpty(ids))
             {
                 var items = ids.Split(',');
-                if(items!=null && items.Any())
+                if (items != null && items.Any())
                 {
-                    foreach(var item in items)
+                    foreach (var item in items)
                     {
-                        var obj = dbContext.News.Find(Convert.ToInt32(item));
-                        dbContext.News.Remove(obj);
+                        var obj = dbContext.Posts.Find(Convert.ToInt32(item));
+                        dbContext.Posts.Remove(obj);
                         dbContext.SaveChanges();
-                    }                   
+                    }
                 }
                 return Json(new { success = true });
             }

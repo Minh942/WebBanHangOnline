@@ -1,8 +1,9 @@
-﻿@model IEnumerable <WebBanHangOnline.Models.EF.News>
+﻿@model IEnumerable<WebBanHangOnline.Models.EF.Posts>
 @{
-    ViewBag.Title = "Danh sách tin tức";
+    ViewBag.Title = "Bài viết";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
+
 
 @section naviheader{
     <!-- Left navbar links -->
@@ -14,7 +15,7 @@
             <a href="/admin" class="nav-link">Home</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/admin/news" class="nav-link">Tin tức</a>
+            <a href="/admin/posts" class="nav-link">@ViewBag.Title</a>
         </li>
     </ul>
 }
@@ -23,7 +24,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Danh sách tin tức</h1>
+                <h1>Danh sách @ViewBag.Title</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -44,7 +45,7 @@
             <h3 class="card-title">@ViewBag.Title</h3>
 
             <div class="card-tools">
-                <a href="/admin/news/add" class="btn btn-primary">Thêm mới</a>
+                <a href="/admin/posts/add" class="btn btn-primary">Thêm mới</a>
                 <a href="#" class="btn btn-danger" id="BtnDeleteAll">Xóa</a>
             </div>
         </div>
@@ -53,7 +54,7 @@
                 <thead>
                     <tr>
                         <th><input type="checkbox" id="SelectAll" /></th>
-                        <th>STT</th>                        
+                        <th>STT</th>
                         <th>Hình ảnh</th>
                         <th>Tiêu đề</th>
                         <th>Ngày tạo</th>
@@ -71,15 +72,15 @@
                             var strCheck = item.IsActive ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
                             <tr id="trow_@item.Id">
                                 <td><input type="checkbox" class="cbkItem" value="@item.Id" /></td>
-                                <td>@i</td>                                
-                                <td><img src="@item.Image"/></td>
+                                <td>@i</td>
+                                <td><img src="@item.Image" /></td>
                                 <td>@item.Title</td>
                                 <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
                                 <td class="text-center">
                                     <a href='#' data-id="@item.Id" class="btnActive">@Html.Raw(strCheck)</a>
                                 </td>
                                 <td>
-                                    <a href="/admin/news/edit/@item.Id" class="btn btn-sm btn-primary">Sửa</a>
+                                    <a href="/admin/posts/edit/@item.Id" class="btn btn-sm btn-primary">Sửa</a>
                                     <a href="#" data-id="@item.Id" class="btn btn-sm btn-danger btnDelete">Xóa</a>
                                 </td>
                             </tr>
@@ -116,7 +117,7 @@
                 var str = "";
                 var checkbox = $(this).parents('.card').find('tr td input:checkbox');
                 var i = 0;
-                checkbox.each(function () {                    
+                checkbox.each(function () {
                     if (this.checked) {
                         checkbox.attr('selected', 'checked');
                         var _id = $(this).val();
@@ -134,7 +135,7 @@
                     var conf = confirm('Bạn có muốn xóa các bản ghi này không?');
                     if (conf === true) {
                         $.ajax({
-                            url: '/news/deleteAll',
+                            url: '/posts/deleteAll',
                             type: 'POST',
                             data: { ids: str },
                             success: function (rs) {
@@ -165,7 +166,7 @@
                 var conf = confirm('Bạn có muốn xóa danh mục này không?');
                 if (conf === true) {
                     $.ajax({
-                        url: '/admin/news/delete',
+                        url: '/admin/posts/delete',
                         type: 'POST',
                         data: { id: id },
                         success: function (rs) {
@@ -181,7 +182,7 @@
                 var btn = $(this);
                 var id = btn.data("id");
                 $.ajax({
-                    url: '/admin/news/IsActive',
+                    url: '/admin/posts/IsActive',
                     type: 'POST',
                     data: { id: id },
                     success: function (rs) {
@@ -191,13 +192,13 @@
                             } else {
                                 btn.html("<i class='fas fa-times text-danger'></i>");
                             }
-                        } 
+                        }
                     }
-                });                
+                });
             });
         })
 
-        
+
     </script>
 }
 

@@ -172,6 +172,7 @@
     <Compile Include="Areas\Admin\Controllers\CategoryController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\NewsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\PostsController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -193,6 +194,10 @@
     <Compile Include="Migrations\202302030945105_update1.cs" />
     <Compile Include="Migrations\202302030945105_update1.designer.cs">
       <DependentUpon>202302030945105_update1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202302060732379_ChangeModels.cs" />
+    <Compile Include="Migrations\202302060732379_ChangeModels.designer.cs">
+      <DependentUpon>202302060732379_ChangeModels.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -3127,6 +3132,9 @@
     <Content Include="Content\ckeditor\skins\moono\readme.md" />
     <Content Include="Content\ckfinder\plugins\fileeditor\codemirror\LICENSE" />
     <Content Include="Areas\Admin\Views\News\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Posts\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Posts\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\Posts\Edit.cshtml" />
     <None Include="Scripts\jquery-3.6.3.intellisense.js" />
     <Content Include="Scripts\jquery-3.6.3.js" />
     <Content Include="Scripts\jquery-3.6.3.min.js" />
@@ -3217,6 +3225,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202302030945105_update1.resx">
       <DependentUpon>202302030945105_update1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202302060732379_ChangeModels.resx">
+      <DependentUpon>202302060732379_ChangeModels.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
