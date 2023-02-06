@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PagedList;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -12,9 +13,22 @@ namespace WebBanHangOnline.Areas.Admin.Controllers
     {
         private ApplicationDbContext dbContext = new ApplicationDbContext();
         // GET: Admin/News
-        public ActionResult Index()
+        public ActionResult Index(string searchText, int? page)
         {
-            var items = dbContext.News.OrderByDescending(x => x.Id).ToList();           
+            var pageSize = 10;
+            if (page == null)
+            {
+                page = 1;
+            }
+            IEnumerable<News> items = dbContext.News.OrderByDescending(x => x.Id);
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                items =  items.Where(x => x.Alias.Equals(searchText) || x.Title.Contains(searchText)).ToList();
+            }
+            var pageIndex = page.HasValue ? Convert.ToInt32(page):1;
+            items = items.ToPagedList(pageIndex,pageSize);
+            ViewBag.PageSize = pageSize;
+            ViewBag.Page = page;
             return View(items);
         }
 

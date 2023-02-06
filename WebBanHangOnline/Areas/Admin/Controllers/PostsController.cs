@@ -42,7 +42,7 @@ namespace WebBanHangOnline.Areas.Admin.Controllers
 
         public ActionResult Edit(int id)
         {
-            var item = dbContext.News.Find(id);
+            var item = dbContext.Posts.Find(id);
             return View(item);
         }
 

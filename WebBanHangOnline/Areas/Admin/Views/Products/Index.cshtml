@@ -1,10 +1,11 @@
-﻿@model PagedList.PagedList<WebBanHangOnline.Models.EF.News>
+﻿@model PagedList.PagedList<WebBanHangOnline.Models.EF.Product>
 @using PagedList.Mvc;
 @using PagedList;
 @{
-    ViewBag.Title = "Danh sách tin tức";
+    ViewBag.Title = "Danh sách sản phẩm";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
+
 
 @section naviheader{
     <!-- Left navbar links -->
@@ -16,7 +17,7 @@
             <a href="/admin" class="nav-link">Home</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/admin/news" class="nav-link">Tin tức</a>
+            <a href="/admin/products" class="nav-link">Sản phẩm</a>
         </li>
     </ul>
 }
@@ -46,18 +47,18 @@
             <h3 class="card-title">@ViewBag.Title</h3>
 
             <div class="card-tools">
-                <a href="/admin/news/add" class="btn btn-primary">Thêm mới</a>
+                <a href="/admin/products/add" class="btn btn-primary">Thêm mới</a>
                 <a href="#" class="btn btn-danger" id="BtnDeleteAll">Xóa</a>
             </div>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-6">
-                    @using (Html.BeginForm("index", "News", FormMethod.Get, new { }))
+                    @using (Html.BeginForm("index", "Products", FormMethod.Get, new { }))
                     {
                         <form>
                             <div class="input-group input-group-sm">
-                                @Html.TextBox("searchText", new {@class = "form-control"})
+                                @Html.TextBox("searchText", new { @class = "form-control" })
                                 @*<input type="text" class="form-control">*@
                                 <span class="input-group-append">
                                     <button type="submit" class="btn btn-info btn-flat">Tìm kiếm</button>
@@ -71,27 +72,32 @@
                 <thead>
                     <tr>
                         <th><input type="checkbox" id="SelectAll" /></th>
-                        <th>STT</th>                        
+                        <th>STT</th>
                         <th>Hình ảnh</th>
-                        <th>Tiêu đề</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Danh mục</th>
+                        <th>Số lượng</th>
+                        <th>Giá</th>
                         <th>Ngày tạo</th>
                         <th>Hiển thị</th>
-                        <th>Thứ tự</th>
                         <th style="width:150px;"></th>
                     </tr>
                 </thead>
                 <tbody>
                     @if (Model != null && Model.Any())
                     {
-                        var i = ((ViewBag.Page-1)*ViewBag.PageSize)+1;
+                        var i = ((ViewBag.Page - 1) * ViewBag.PageSize) + 1;
                         foreach (var item in Model)
                         {
                             var strCheck = item.IsActive ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
                             <tr id="trow_@item.Id">
                                 <td><input type="checkbox" class="cbkItem" value="@item.Id" /></td>
-                                <td>@i</td>                                
-                                <td><img src="@item.Image"/></td>
+                                <td>@i</td>
+                                <td><img src="@item.Image" /></td>
                                 <td>@item.Title</td>
+                                <td>@item.ProductCategory.Title</td>
+                                <td>@item.Quantity</td>
+                                <td>@item.Price</td>
                                 <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
                                 <td class="text-center">
                                     <a href='#' data-id="@item.Id" class="btnActive">@Html.Raw(strCheck)</a>
@@ -120,7 +126,7 @@
                     @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
                 </div>
             </div>
-            
+
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
@@ -141,7 +147,7 @@
                 var str = "";
                 var checkbox = $(this).parents('.card').find('tr td input:checkbox');
                 var i = 0;
-                checkbox.each(function () {                    
+                checkbox.each(function () {
                     if (this.checked) {
                         checkbox.attr('selected', 'checked');
                         var _id = $(this).val();
@@ -216,13 +222,14 @@
                             } else {
                                 btn.html("<i class='fas fa-times text-danger'></i>");
                             }
-                        } 
+                        }
                     }
-                });                
+                });
             });
         })
 
-        
+
     </script>
 }
+
 
