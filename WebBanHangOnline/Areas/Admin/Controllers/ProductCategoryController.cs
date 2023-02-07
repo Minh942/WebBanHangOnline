@@ -14,7 +14,8 @@ namespace WebBanHangOnline.Areas.Admin.Controllers
         // GET: Admin/ProductCategory
         public ActionResult Index()
         {
-            return View();
+            var items = dbContext.ProductCategories;
+            return View(items);
         }
 
         public ActionResult Add()
@@ -25,6 +26,15 @@ namespace WebBanHangOnline.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Add(ProductCategory model)
         {
+            if (ModelState.IsValid)
+            {
+                model.CreatedDate = DateTime.Now;
+                model.ModifiedDate = DateTime.Now;
+                model.Alias = WebBanHangOnline.Models.Common.Filter.ChuyenCoDauThanhKhongDau(model.Title);
+                dbContext.ProductCategories.Add(model);
+                dbContext.SaveChanges();
+                return RedirectToAction("Index");
+            }
             return View();
         }
     }
